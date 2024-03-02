@@ -8,9 +8,12 @@ export const Render = () =>{
         {isPopup &&
         <div
             style={{backgroundColor:'yellow'}}
-            onTouchStart={(e: React.TouchEvent<HTMLDivElement>)=> swipeCheck.setStartY(e) }
-            onTouchMove={(e: React.TouchEvent<HTMLDivElement>)=> swipeCheck.setEndY(e) }
+            onTouchStart={(e: React.TouchEvent<HTMLDivElement>)=> swipeCheck.setStartYByTouch(e) }
+            onTouchMove={(e: React.TouchEvent<HTMLDivElement>)=> swipeCheck.setEndYByTouch(e) }
             onTouchEnd={()=> setIsPopup(!swipeCheck.swipeCheck())}
+            onMouseDown={(e: React.MouseEvent<HTMLDivElement>)=> swipeCheck.setStartYByMouse(e) }
+            onMouseMove={(e: React.MouseEvent<HTMLDivElement>)=> swipeCheck.setEndYByMouse(e) }
+            onMouseUp={()=> setIsPopup(!swipeCheck.swipeCheck())}
             data-testid='tempTest'
         >
             <h1>ポップアップ画面</h1>

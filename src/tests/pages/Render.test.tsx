@@ -32,7 +32,7 @@ describe('Render.tsxのテスト', () => {
             })
 
             test('開始すると、setStartYメソッドを呼び出している', async () => {
-                const spyTouchStart = vi.spyOn(swipeCheck, 'setStartY')
+                const spyTouchStart = vi.spyOn(swipeCheck, 'setStartYByTouch')
                 const event = {targetTouches: [{clientX: 100, clientY: 200}]};
 
                 fireEvent.touchStart(screen.getByTestId('tempTest'), event)
@@ -45,7 +45,7 @@ describe('Render.tsxのテスト', () => {
                     }))
             })
             test('スワイプ中、setEndYメソッドを呼び出している', async () => {
-                const spyTouchMove = vi.spyOn(swipeCheck, 'setEndY')
+                const spyTouchMove = vi.spyOn(swipeCheck, 'setEndYByTouch')
                 const event = {targetTouches: [{clientX: 100, clientY: 200}]};
 
                 fireEvent.touchMove(screen.getByTestId('tempTest'), event)

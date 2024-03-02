@@ -11,7 +11,7 @@ describe('SwipeCheck.tsのテスト', () => {
                         clientY: 200
                     }]
             } as unknown as React.TouchEvent<HTMLDivElement>
-        swipeCheck.setStartY(event)
+        swipeCheck.setStartYByTouch(event)
 
         expect(swipeCheck.startY).toBe(200)
     })
@@ -24,7 +24,7 @@ describe('SwipeCheck.tsのテスト', () => {
                         clientY: 200
                     }]
             } as unknown as React.TouchEvent<HTMLDivElement>
-        swipeCheck.setEndY(event)
+        swipeCheck.setEndYByTouch(event)
 
         expect(swipeCheck.endY).toBe(200)
     })
