@@ -3,17 +3,28 @@ import {Render} from '../../pages/Render.tsx';
 import {userEvent} from '@testing-library/user-event';
 import swipeCheck from "../../service/SwipeCheck.ts";
 import {vi} from "vitest";
+import {useNavigate} from "react-router-dom";
 
 vi.mock("../service/SwipeCheck.ts")
-
+vi.mock('react-router-dom')
 describe('Render.tsxのテスト', () => {
-    test('Renderをレンダリングすると、ポップアップボタンが存在すること', () => {
-        render(<Render/>);
 
-        expect(
-            screen.getByRole('button', {name: 'ポップアップ'})
-        ).toBeInTheDocument();
-    });
+    describe('Renderをレンダリングすると',()=>{
+        test('ポップアップボタンが存在すること', () => {
+            render(<Render/>);
+
+            expect(
+                screen.getByRole('button', {name: 'ポップアップ'})
+            ).toBeInTheDocument();
+        });
+        test('スライドページボタンが存在すること', () => {
+            render(<Render/>);
+
+            expect(
+                screen.getByRole('button', {name: 'スライドページ'})
+            ).toBeInTheDocument();
+        });
+    })
     describe('ポップアップボタンを押すと',()=>{
         test('適切な要素が表示されること', async () => {
             render(<Render/>);
@@ -134,6 +145,17 @@ describe('Render.tsxのテスト', () => {
                 expect(spyMouseEnd).toHaveBeenCalled()
                 expect(screen.queryByRole('heading',{name:'ポップアップ画面'})).toBeInTheDocument()
             })
+        })
+    })
+    describe('スライドページボタンを押すと,',()=>{
+        test('Navigateを/swipepage/swipeareaを引数として呼ぶ',async ()=>{
+            const spyNavigate = vi.fn()
+            vi.mocked(useNavigate).mockReturnValue(spyNavigate)
+            render(<Render />)
+
+            await userEvent.click(screen.getByRole('button',{name : 'スライドページ'}))
+
+            expect(spyNavigate).toHaveBeenCalledWith('/swipepage/swipearea')
         })
     })
 });

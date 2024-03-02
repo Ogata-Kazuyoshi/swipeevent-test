@@ -1,10 +1,13 @@
 import  {useState} from "react";
 import swipeCheck from "../service/SwipeCheck.ts";
+import {useNavigate} from "react-router-dom";
 
 export const Render = () =>{
     const [isPopup, setIsPopup] = useState(false)
+    const naviget = useNavigate()
     return<>
         <button onClick={()=> setIsPopup(true)}>ポップアップ</button>
+        <button onClick={()=> naviget('/swipepage/swipearea')}>スライドページ</button>
         {isPopup &&
         <div
             style={{backgroundColor:'yellow'}}
