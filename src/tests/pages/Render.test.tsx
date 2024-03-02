@@ -31,7 +31,7 @@ describe('Render.tsxのテスト', () => {
                 vi.restoreAllMocks()
             })
 
-            test('開始すると、setStartYメソッドを呼び出している', async () => {
+            test('開始すると、setStartYByTouchメソッドを呼び出している', async () => {
                 const spyTouchStart = vi.spyOn(swipeCheck, 'setStartYByTouch')
                 const event = {targetTouches: [{clientX: 100, clientY: 200}]};
 
@@ -44,7 +44,7 @@ describe('Render.tsxのテスト', () => {
                         }]
                     }))
             })
-            test('スワイプ中、setEndYメソッドを呼び出している', async () => {
+            test('スワイプ中、setEndYByTouchメソッドを呼び出している', async () => {
                 const spyTouchMove = vi.spyOn(swipeCheck, 'setEndYByTouch')
                 const event = {targetTouches: [{clientX: 100, clientY: 200}]};
 
@@ -76,6 +76,62 @@ describe('Render.tsxのテスト', () => {
 
                 fireEvent.touchEnd(screen.getByTestId('tempTest'));
                 expect(spyTouchEnd).toHaveBeenCalled()
+                expect(screen.queryByRole('heading',{name:'ポップアップ画面'})).toBeInTheDocument()
+            })
+        })
+        describe('マウス操作動作に関して',()=>{
+            beforeEach(async ()=>{
+                render(<Render/>);
+                await userEvent.click(screen.getByRole('button', {name: "ポップアップ"}))
+            })
+            afterEach(()=>{
+                vi.restoreAllMocks()
+            })
+
+            test('開始すると、setStartYByMouseメソッドを呼び出している', async () => {
+                const spyMouseStart = vi.spyOn(swipeCheck, 'setStartYByMouse')
+                const event = {clientX: 100, clientY: 200};
+
+                fireEvent.mouseDown(screen.getByTestId('tempTest'), event)
+                expect(spyMouseStart).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                            clientX: 100,
+                            clientY: 200
+                    }))
+            })
+            test('マウス動作中、setEndYByMouseメソッドを呼び出している', async () => {
+
+                const spyMouseMove = vi.spyOn(swipeCheck, 'setEndYByMouse')
+                const event = {clientX: 100, clientY: 200};
+
+                fireEvent.mouseMove(screen.getByTestId('tempTest'), event)
+                expect(spyMouseMove).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        clientX:100,
+                        clientY:200
+                    })
+                )
+            })
+            test('マウス動作を終了すると、swipeCheckメソッドを呼んでいる', async () => {
+                const spyMouseEnd = vi.spyOn(swipeCheck, 'swipeCheck')
+
+                fireEvent.mouseUp(screen.getByTestId('tempTest'));
+                expect(spyMouseEnd).toHaveBeenCalled()
+            })
+            test('マウス操作を終了すると、swipeCheckメソッドを呼びその帰り値がtrueの場合はポップアップが非表示になる', async () => {
+                const spyMouseEnd = vi.spyOn(swipeCheck, 'swipeCheck').mockReturnValue(true)
+
+                fireEvent.mouseUp(screen.getByTestId('tempTest'));
+                expect(spyMouseEnd).toHaveBeenCalled()
+
+                expect(screen.queryByRole('heading',{name:'ポップアップ画面'})).toBeNull()
+            })
+            test('マウス操作を終了すると、swipeCheckメソッドを呼びその帰り値がfalseの場合はポップアップは表示されたままになる', async () => {
+
+                const spyMouseEnd = vi.spyOn(swipeCheck, 'swipeCheck').mockReturnValue(false)
+
+                fireEvent.mouseUp(screen.getByTestId('tempTest'));
+                expect(spyMouseEnd).toHaveBeenCalled()
                 expect(screen.queryByRole('heading',{name:'ポップアップ画面'})).toBeInTheDocument()
             })
         })
