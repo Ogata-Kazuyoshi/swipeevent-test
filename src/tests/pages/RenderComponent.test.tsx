@@ -35,14 +35,14 @@ describe('RenderComponent.tsxのテスト',()=>{
         expect(screen.getByText('下にスワイプすると消えます')).toBeInTheDocument()
     })
     test('isPopupがtrueの場合、正しい引数でSwipeコンポーネントを呼んでいること',()=>{
-        const spySetIsPopup = vi.fn()
-        vi.mocked(useState).mockReturnValue([true,spySetIsPopup]) //isPopupのステートを強制的にtrueにする
+        const dummySetIsPopup = vi.fn()
+        vi.mocked(useState).mockReturnValue([true,dummySetIsPopup]) //isPopupのステートを強制的にtrueにする
 
         render(<RenderComponent />)
 
         expect(Swipe).toHaveBeenCalledWith(
             expect.objectContaining({
-                setIsPopup : spySetIsPopup,
+                setIsPopup : dummySetIsPopup,
             }),
             {}
         )
