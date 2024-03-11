@@ -4,6 +4,7 @@ import {userEvent} from '@testing-library/user-event';
 import swipeCheck from "../../service/SwipeCheck.ts";
 import {vi} from "vitest";
 import {useNavigate} from "react-router-dom";
+import * as reactrouter from "react-router-dom"
 
 vi.mock("../service/SwipeCheck.ts")
 vi.mock('react-router-dom')
@@ -151,6 +152,18 @@ describe('Render.tsxのテスト', () => {
         test('Navigateを/swipepage/swipeareaを引数として呼ぶ',async ()=>{
             const spyNavigate = vi.fn()
             vi.mocked(useNavigate).mockReturnValue(spyNavigate)
+            render(<Render />)
+
+            await userEvent.click(screen.getByRole('button',{name : 'スライドページ'}))
+
+            expect(spyNavigate).toHaveBeenCalledWith('/swipepage/swipearea')
+        })
+    })
+
+    describe('スライドページボタンを押すと,',()=>{
+        test('Navigateを/swipepage/swipeareaを引数として呼ぶ',async ()=>{
+            const spyNavigate = vi.fn()
+            vi.spyOn(reactrouter, 'useNavigate').mockReturnValue(spyNavigate)
             render(<Render />)
 
             await userEvent.click(screen.getByRole('button',{name : 'スライドページ'}))
