@@ -161,9 +161,19 @@ describe('Render.tsxのテスト', () => {
     })
 
     describe('スライドページボタンを押すと,',()=>{
-        test('Navigateを/swipepage/swipeareaを引数として呼ぶ',async ()=>{
+        test('Navigateを/swipepage/swipeareaを引数として呼ぶ2',async ()=>{
             const spyNavigate = vi.fn()
             vi.spyOn(reactRouter, 'useNavigate').mockReturnValue(spyNavigate)
+            render(<Render />)
+
+            await userEvent.click(screen.getByRole('button',{name : 'スライドページ'}))
+
+            expect(spyNavigate).toHaveBeenCalledWith('/swipepage/swipearea')
+        })
+
+        test('Navigateを/swipepage/swipeareaを引数として呼ぶ3',async ()=>{
+            const spyNavigate = vi.fn()
+            vi.spyOn(reactRouter, 'useNavigate').mockImplementation(()=>spyNavigate)
             render(<Render />)
 
             await userEvent.click(screen.getByRole('button',{name : 'スライドページ'}))
